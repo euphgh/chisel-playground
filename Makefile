@@ -1,4 +1,3 @@
-CHISEL3 ?= 1
 MFC ?= 0
 
 BUILD_DIR 	:= ./build
@@ -7,15 +6,9 @@ CACHE_DIR 	:= ./.cache
 #=========================================================
 #======================== firtool ========================
 #=========================================================
-ifeq ($(CHISEL3), 1)
-FIRTOOL_VERSION := 1.37.2
-CHISEL_VERSION  := chisel3
-else 
 FIRTOOL_VERSION := 1.62.0
-CHISEL_VERSION  := chisel
-endif
 FIRTOOL_URL := https://github.com/llvm/circt/releases/download/firtool-$(FIRTOOL_VERSION)/firrtl-bin-linux-x64.tar.gz
-CACHE_FIRTOOL_PATH = $(CACHE_DIR)/firtool-$(FIRTOOL_VERSION)/bin/firtool
+CACHE_FIRTOOL_PATH := $(CACHE_DIR)/firtool-$(FIRTOOL_VERSION)/bin/firtool
 ifeq ($(MFC),1)
 ifeq ($(wildcard $(CACHE_FIRTOOL_PATH)),)
 $(info [INFO] Downloading from $(FIRTOOL_URL))
@@ -24,6 +17,9 @@ endif
 MFC_ARGS := --firtool-binary-path $(CACHE_FIRTOOL_PATH) \
 			--dump-fir $(FIRTOOL_ARGS) \
            	--firtool-opt "-O=release --disable-annotation-unknown --lowering-options=explicitBitcast,disallowLocalVariables,disallowPortDeclSharing"
+CHISEL_VERSION  := chisel
+else
+CHISEL_VERSION  := chisel3
 endif
 
 PRJ_NAME := playground[$(CHISEL_VERSION)]

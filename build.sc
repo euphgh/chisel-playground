@@ -38,7 +38,13 @@ trait HasChisel extends ScalaModule with Cross.Module[String] {
 }
 
 trait PlayGround extends HasChisel {
+  override def sources = T.sources {
+    super.sources() ++ Seq(PathRef(millSourcePath / crossValue / "src"))
+  }
   object test extends ScalaTests with ScalaTest {
+    override def sources = T.sources {
+      super.sources() ++ Seq(PathRef(millSourcePath / crossValue / "test"))
+    }
     override def ivyDeps = super.ivyDeps() ++ Agg(
       defaultVersions(crossValue)("chiseltest")
     )
