@@ -37,13 +37,15 @@ trait HasChisel extends ScalaModule with Cross.Module[String] with ScalafmtModul
   override def scalacPluginIvyDeps = super.scalacPluginIvyDeps() ++ Agg(chiselPluginIvy.get)
 }
 
-trait PlayGround extends HasChisel {
+// XiangShan project directory struct
+trait ChiselCrossXS extends SbtModule with HasChisel {
+  override def millSourcePath = os.pwd
   override def sources = T.sources {
-    super.sources() ++ Seq(PathRef(millSourcePath / crossValue / "src"))
+    super.sources() ++ Seq(PathRef(millSourcePath / "src" / crossValue / "main" / "scala"))
   }
-  object test extends ScalaTests with ScalaTest {
+  object test extends SbtModuleTests with TestModule.ScalaTest {
     override def sources = T.sources {
-      super.sources() ++ Seq(PathRef(millSourcePath / crossValue / "test"))
+      super.sources() ++ Seq(PathRef(this.millSourcePath / "src" / crossValue / "test" / "scala"))
     }
     override def ivyDeps = super.ivyDeps() ++ Agg(
       defaultVersions(crossValue)("chiseltest")
@@ -51,4 +53,19 @@ trait PlayGround extends HasChisel {
   }
 }
 
-object playground extends Cross[PlayGround]("chisel", "chisel3")
+// mill scala project directory struct
+trait ChiselCrossMill extends HasChisel {
+  override def sources = T.sources {
+    super.sources() ++ Seq(PathRef(millSourcePath / crossValue / "src"))
+  }
+  object test extends ScalaTests with ScalaTest {
+    override def sources = T.sources {
+      super.sources() ++ Seq(PathRef(this.millSourcePath / crossValue / "test"))
+    }
+    override def ivyDeps = super.ivyDeps() ++ Agg(
+      defaultVersions(crossValue)("chiseltest")
+    )
+  }
+}
+
+object playground extends Cross[ChiselCrossMill]("chisel", "chisel3")
