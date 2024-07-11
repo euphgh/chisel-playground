@@ -5,7 +5,7 @@ import mill.scalalib.TestModule.ScalaTest
 // support BSP
 import mill.bsp._
 
-val defaultScalaVersion = "2.13.11"
+val defaultScalaVersion = "2.13.14"
 
 def defaultVersions(chiselVersion: String) = chiselVersion match {
   case "chisel" =>
