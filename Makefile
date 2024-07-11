@@ -14,16 +14,14 @@ ifeq ($(wildcard $(CACHE_FIRTOOL_PATH)),)
 $(info [INFO] Downloading from $(FIRTOOL_URL))
 $(shell mkdir -p $(CACHE_DIR) && curl -L $(FIRTOOL_URL) | tar -xzC $(CACHE_DIR))
 endif
-MFC_ARGS := --firtool-binary-path $(CACHE_FIRTOOL_PATH) \
-			--dump-fir $(FIRTOOL_ARGS) \
-           	--firtool-opt "-O=release --disable-annotation-unknown --lowering-options=explicitBitcast,disallowLocalVariables,disallowPortDeclSharing"
+MFC_ARGS := --firtool-binary-path $(CACHE_FIRTOOL_PATH)
 CHISEL_VERSION  := chisel
 else
 CHISEL_VERSION  := chisel3
 endif
 
 PRJ_NAME := playground[$(CHISEL_VERSION)]
-MAIN_CLASS := Elaborate
+MAIN_CLASS := top.Elaborate
 
 test:
 	mill -i $(PRJ_NAME).test

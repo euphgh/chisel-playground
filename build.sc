@@ -5,24 +5,24 @@ import mill.scalalib.TestModule.ScalaTest
 // support BSP
 import mill.bsp._
 
-val defaultScalaVersion = "2.13.10"
+val defaultScalaVersion = "2.13.11"
 
 def defaultVersions(chiselVersion: String) = chiselVersion match {
   case "chisel" =>
     Map(
-      "chisel" -> ivy"org.chipsalliance::chisel:6.0.0",
-      "chisel-plugin" -> ivy"org.chipsalliance:::chisel-plugin:6.0.0",
-      "chiseltest" -> ivy"edu.berkeley.cs::chiseltest:5.0.2"
+      "chisel" -> ivy"org.chipsalliance::chisel:6.4.0",
+      "chisel-plugin" -> ivy"org.chipsalliance:::chisel-plugin:6.4.0",
+      "chiseltest" -> ivy"edu.berkeley.cs::chiseltest:6.0.0",
     )
   case "chisel3" =>
     Map(
-      "chisel" -> ivy"edu.berkeley.cs::chisel3:3.6.0",
-      "chisel-plugin" -> ivy"edu.berkeley.cs:::chisel3-plugin:3.6.0",
-      "chiseltest" -> ivy"edu.berkeley.cs::chiseltest:0.6.2"
+      "chisel" -> ivy"edu.berkeley.cs::chisel3:3.6.1",
+      "chisel-plugin" -> ivy"edu.berkeley.cs:::chisel3-plugin:3.6.1",
+      "chiseltest" -> ivy"edu.berkeley.cs::chiseltest:0.6.2",
     )
 }
 
-trait HasChisel extends ScalaModule with Cross.Module[String] {
+trait HasChisel extends ScalaModule with Cross.Module[String] with ScalafmtModule {
   def chiselIvy: Option[Dep] = Some(defaultVersions(crossValue)("chisel"))
 
   def chiselPluginIvy: Option[Dep] = Some(defaultVersions(crossValue)("chisel-plugin"))
